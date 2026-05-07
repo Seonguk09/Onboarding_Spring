@@ -1,4 +1,4 @@
-package com.example.Onboarding_Spring.config.exception;
+package com.example.Onboarding_Spring.common.config.exception;
 
 import lombok.Getter;
 

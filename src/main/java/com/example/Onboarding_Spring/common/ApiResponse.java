@@ -1,4 +1,4 @@
-package com.example.Onboarding_Spring.config;
+package com.example.Onboarding_Spring.common.config;
 
 public record ApiResponse<T>(int code, boolean success, String message, T data) {
 
