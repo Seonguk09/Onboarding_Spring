@@ -4,10 +4,10 @@ import lombok.Getter;
 
 @Getter
 public class ApiResponse<T> {
-    private int code;
-    private boolean success;
-    private String message;
-    private T data;
+    private final int code;
+    private final boolean success;
+    private final String message;
+    private final T data;
 
     public ApiResponse(int code, boolean success, String message, T data) {
         this.code = code;
