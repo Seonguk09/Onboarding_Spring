@@ -7,10 +7,12 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "tech_stack")
-@Getter @Setter
+@Getter
+@Setter
 public class TechStack {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Integer techStackId;
 
     @Column(length = 50)

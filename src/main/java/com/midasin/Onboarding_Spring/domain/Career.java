@@ -8,10 +8,12 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "career")
-@Getter @Setter
+@Getter
+@Setter
 public class Career {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Integer careerId;
 
     @Column(nullable = false, length = 50)

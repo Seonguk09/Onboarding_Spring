@@ -13,10 +13,12 @@ import java.util.List;
 
 @Entity
 @Table(name = "job_posting")
-@Getter @Setter
+@Getter
+@Setter
 public class JobPosting {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Integer jobPostingId;
 
     @Column(nullable = false, length = 50)

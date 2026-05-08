@@ -10,10 +10,12 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "application")
-@Getter @Setter
+@Getter
+@Setter
 public class Application {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Integer applicationId;
 
     @Column(length = 255)

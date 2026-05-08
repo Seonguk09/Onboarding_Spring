@@ -6,10 +6,12 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "job_posting_career")
-@Getter @Setter
+@Getter
+@Setter
 public class JobPostingCareer {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Integer jobPostingCareerId;
 
     @ManyToOne(fetch = FetchType.LAZY)

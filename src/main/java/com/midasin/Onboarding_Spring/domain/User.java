@@ -11,10 +11,12 @@ import java.util.List;
 
 @Entity
 @Table(name = "user")
-@Getter @Setter
+@Getter
+@Setter
 public class User {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Integer userId;
 
     @Column(nullable = false, unique = true, length = 255)
