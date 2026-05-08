@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class Education {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer educationId;
 
     @Column(length = 50)

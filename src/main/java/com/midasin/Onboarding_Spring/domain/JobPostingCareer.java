@@ -11,7 +11,7 @@ import lombok.Setter;
 public class JobPostingCareer {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer jobPostingCareerId;
 
     @ManyToOne(fetch = FetchType.LAZY)

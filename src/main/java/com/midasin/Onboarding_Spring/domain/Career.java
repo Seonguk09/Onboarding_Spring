@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public class Career {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer careerId;
 
     @Column(nullable = false, length = 50)

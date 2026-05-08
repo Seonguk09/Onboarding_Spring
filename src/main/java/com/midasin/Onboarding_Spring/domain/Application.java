@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class Application {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer applicationId;
 
     @Column(length = 255)

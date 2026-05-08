@@ -12,7 +12,7 @@ import lombok.Setter;
 public class TechStack {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer techStackId;
 
     @Column(length = 50)

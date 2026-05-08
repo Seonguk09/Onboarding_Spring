@@ -11,7 +11,7 @@ import lombok.Setter;
 public class JobPostingTechStack {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer jobPostingTechStackId;
 
     @ManyToOne(fetch = FetchType.LAZY)
