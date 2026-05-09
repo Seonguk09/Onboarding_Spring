@@ -1,4 +1,4 @@
-package com.example.Onboarding_Spring;
+package com.midasin.Onboarding_Spring;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

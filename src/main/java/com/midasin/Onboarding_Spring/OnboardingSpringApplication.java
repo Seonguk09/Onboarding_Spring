@@ -1,4 +1,4 @@
-package com.example.Onboarding_Spring;
+package com.midasin.Onboarding_Spring;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

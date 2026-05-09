@@ -1,6 +1,6 @@
-package com.example.Onboarding_Spring.config.exception;
+package com.midasin.Onboarding_Spring.common.config.exception;
 
-import com.example.Onboarding_Spring.config.ApiResponse;
+import com.midasin.Onboarding_Spring.common.ApiResponse;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
