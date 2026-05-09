@@ -90,4 +90,64 @@ public class JobPosting {
 
     @OneToMany(mappedBy = "jobPosting", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<JobPostingTechStack> jobPostingTechStacks = new ArrayList<>();
+
+    // 연관관계 편의 메서드 구현
+    // 기본 setter 아니기 때문에 메소드명 change로 시작
+    public void changeCreateUser(User createdUser) {
+        this.createdUser = createdUser;
+        if (!createdUser.getJobPostings().contains(this)) {
+            createdUser.getJobPostings().add(this);
+        }
+    }
+
+    // 다대다 연관관계 편의 메서드
+    // 로직상 공고에서 추가 삭제하는것이 직관적이기 때문에 JobPosting에서 구현
+    public void addEducation(Education education) {
+        JobPostingEducation jobPostingEducation = new JobPostingEducation();
+        jobPostingEducation.setJobPosting(this);
+        jobPostingEducation.setEducation(education);
+        this.jobPostingEducations.add(jobPostingEducation);
+    }
+
+    public void removeEducation(Education education) {
+        for (JobPostingEducation jobPostingEducation : jobPostingEducations) {
+            if (jobPostingEducation.getEducation().getEducationId().equals(education.getEducationId())) {
+                jobPostingEducations.remove(jobPostingEducation);
+                break;
+            }
+        }
+    }
+
+    public void addCareer(Career career) {
+        JobPostingCareer jobPostingCareer = new JobPostingCareer();
+        jobPostingCareer.setJobPosting(this);
+        jobPostingCareer.setCareer(career);
+        this.jobPostingCareers.add(jobPostingCareer);
+    }
+
+    public void removeCareer(Career career) {
+        for (JobPostingCareer jobPostingCareer : jobPostingCareers) {
+            if (jobPostingCareer.getCareer().getCareerId().equals(career.getCareerId())) {
+                jobPostingCareers.remove(jobPostingCareer);
+                break;
+            }
+        }
+    }
+
+    public void addTechStack(TechStack techStack) {
+        JobPostingTechStack jobPostingTechStack = new JobPostingTechStack();
+        jobPostingTechStack.setJobPosting(this);
+        jobPostingTechStack.setTechStack(techStack);
+        this.jobPostingTechStacks.add(jobPostingTechStack);
+    }
+
+    public void removeTechStack(TechStack techStack) {
+        for (JobPostingTechStack jobPostingTechStack : jobPostingTechStacks) {
+            if (jobPostingTechStack.getTechStack().getTechStackId().equals(techStack.getTechStackId())) {
+                jobPostingTechStacks.remove(jobPostingTechStack);
+                break;
+            }
+        }
+    }
+
 }
