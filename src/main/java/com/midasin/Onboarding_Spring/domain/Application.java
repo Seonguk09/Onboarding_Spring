@@ -56,4 +56,21 @@ public class Application {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "modify_user_id")
     private User modifyUser;
+
+    // 연관관계 편의 메서드
+    // 기본적인 setter가 아니기 때문에 메소드 이름을 change로 시작하도록 변경
+    public void changeJobPosting(JobPosting jobPosting) {
+        this.jobPosting = jobPosting;
+        if (!jobPosting.getApplications().contains(this)) {
+            jobPosting.getApplications().add(this);
+        }
+    }
+
+    public void changeCreateUser(User createUser) {
+        this.createUser = createUser;
+        if (!createUser.getApplications().contains(this)) {
+            createUser.getApplications().add(this);
+        }
+    }
+
 }
