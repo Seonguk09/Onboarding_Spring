@@ -39,6 +39,6 @@ public class User {
     @OneToMany(mappedBy = "createUser", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Application> applications = new ArrayList<>();
 
-    @OneToMany(mappedBy = "createUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "createdUser", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<JobPosting> jobPostings = new ArrayList<>();
 }
