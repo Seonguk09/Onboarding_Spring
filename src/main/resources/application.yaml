@@ -18,3 +18,5 @@ spring:
     redis:
       host: ${REDIS_HOST:localhost}
       port: ${REDIS_PORT:6379}
+  jwt:
+    secret: ${JWT_SECRET:midasin-onboarding-spring-secret-key-256bit-long}
