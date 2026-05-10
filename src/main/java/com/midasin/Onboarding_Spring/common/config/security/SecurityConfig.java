@@ -45,7 +45,8 @@ public class SecurityConfig {
 
                 // 엔드포인트별 접근 권한 설정
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/", "/signUp", "/admin/signUp").permitAll() // 로그인, 회원가입, 홈은 누구나 접근 가능
+                        .requestMatchers("/login", "/", "/signUp", "/swagger-ui/**", "/v3/api-docs/**").permitAll() // 로그인, 회원가입, 홈은 누구나 접근 가능
+                        .requestMatchers("/admin/signUp").permitAll() // 어드민 회원가입은 누구나 접근 가능
                         .requestMatchers("/admin/**").hasAuthority("ADMIN") // /admin 경로는 ADMIN 권한이 필요
                         .anyRequest().authenticated()) // 그 외의 요청은 인증된 사용자만 접근 가능
 
