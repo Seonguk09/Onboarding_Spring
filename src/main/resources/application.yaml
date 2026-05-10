@@ -20,3 +20,5 @@ spring:
       port: ${REDIS_PORT:6379}
   jwt:
     secret: ${JWT_SECRET:midasin-onboarding-spring-secret-key-256bit-long}
+  company:
+    key: ${COMPANY_KEY:midasin-company-secret-key}
