@@ -17,8 +17,8 @@ public class UserController {
 
     // 회원가입 API
     @PostMapping("/signUp")
-    public ApiResponse<String> signUp(@RequestBody SignUpRq signUpDto) {
-        userService.signUp(signUpDto);
+    public ApiResponse<String> signUp(@RequestBody SignUpRq signUpRq) {
+        userService.signUp(signUpRq);
         return ApiResponse.success(201, "회원가입 성공", null);
     }
 
