@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum StatusType {
-    OPEN("진헹중"), CLOSED("종료");
+    OPEN("진행중"), CLOSED("종료");
 
     private final String description;
 }
