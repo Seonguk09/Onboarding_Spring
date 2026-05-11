@@ -1,4 +1,7 @@
 package com.midasin.onboarding.dto;
 
-public record SignUpRq(String email, String password, String name) {
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
+public record SignUpRq(@NotBlank @Email String email, @NotBlank String password, @NotBlank String name) {
 }
