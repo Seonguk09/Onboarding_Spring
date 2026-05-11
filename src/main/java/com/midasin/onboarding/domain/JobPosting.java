@@ -6,6 +6,8 @@ import com.midasin.onboarding.domain.enums.WorkType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -63,8 +65,10 @@ public class JobPosting {
     @Column(length = 20)
     private WorkType workType;
 
+    @CreatedDate
     private LocalDateTime createdDatetime;
 
+    @LastModifiedDate
     private LocalDateTime modifiedDatetime;
 
     private LocalDateTime openingDatetime;

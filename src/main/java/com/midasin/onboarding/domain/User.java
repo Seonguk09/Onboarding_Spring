@@ -3,6 +3,8 @@ package com.midasin.onboarding.domain;
 import com.midasin.onboarding.domain.enums.RoleType;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -34,8 +36,10 @@ public class User {
     @Column(length = 10)
     private RoleType roleType;
 
+    @CreatedDate
     private LocalDateTime createdDatetime;
 
+    @LastModifiedDate
     private LocalDateTime modifiedDatetime;
 
     @OneToMany(mappedBy = "createUser", cascade = CascadeType.ALL, orphanRemoval = true)
