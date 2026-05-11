@@ -41,9 +41,9 @@ public class UserService {
 
     // 회원가입 기능
     @Transactional
-    public void signUp(SignUpRq signUpDto) {
-        isEmailDuplicate(signUpDto.email());
-        User user = createUserEntity(signUpDto);
+    public void signUp(SignUpRq signUpRq) {
+        isEmailDuplicate(signUpRq.email());
+        User user = createUserEntity(signUpRq);
         userRepository.save(user);
     }
 
@@ -55,11 +55,11 @@ public class UserService {
     }
 
     // User 엔티티 생성
-    private User createUserEntity(SignUpRq signUpDto) {
+    private User createUserEntity(SignUpRq signUpRq) {
         return User.builder()
-                .email(signUpDto.email())
-                .password(passwordEncoder.encode(signUpDto.password()))
-                .name(signUpDto.name())
+                .email(signUpRq.email())
+                .password(passwordEncoder.encode(signUpRq.password()))
+                .name(signUpRq.name())
                 .roleType(RoleType.USER)
                 .build();
     }
