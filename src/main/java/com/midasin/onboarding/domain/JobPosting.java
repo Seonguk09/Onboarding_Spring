@@ -4,8 +4,7 @@ import com.midasin.onboarding.domain.enums.EmploymentType;
 import com.midasin.onboarding.domain.enums.StatusType;
 import com.midasin.onboarding.domain.enums.WorkType;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -17,6 +16,9 @@ import java.util.List;
 @Table(name = "job_posting")
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class JobPosting {
 
     @Id
