@@ -32,8 +32,7 @@ public class JobPostingService {
 
     @Transactional
     public void updateJobPosting(Integer id, JobPostingCreateRq rq) {
-        JobPosting jobPosting = jobPostingRepository.findById(id)
-                .orElseThrow(() -> new CustomException(ErrorCode.JOB_NOT_FOUND));
+        JobPosting jobPosting = jobPostingRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.JOB_NOT_FOUND));
 
         jobPosting.setTitle(rq.title());
         jobPosting.setDescription(rq.description());
@@ -52,67 +51,32 @@ public class JobPostingService {
 
     @Transactional(readOnly = true)
     public List<JobPostingListRs> getJobPostingList() {
-        return jobPostingRepository.findAll().stream()
-                .map(jp -> new JobPostingListRs(
-                        jp.getJobPostingId(), jp.getTitle(), jp.getPositionName(),
-                        jp.getEmploymentType(), jp.getLocation(), jp.getDepartment(),
-                        jp.getStatusType(), jp.getSalary(), jp.getWorkType(),
-                        jp.getOpeningDatetime(), jp.getClosingDatetime()))
-                .toList();
+        return jobPostingRepository.findAll().stream().map(jp -> new JobPostingListRs(jp.getJobPostingId(), jp.getTitle(), jp.getPositionName(), jp.getEmploymentType(), jp.getLocation(), jp.getDepartment(), jp.getStatusType(), jp.getSalary(), jp.getWorkType(), jp.getOpeningDatetime(), jp.getClosingDatetime())).toList();
     }
 
     @Transactional(readOnly = true)
     public JobPostingDetailRs getJobPosting(Integer id) {
-        JobPosting jp = jobPostingRepository.findById(id)
-                .orElseThrow(() -> new CustomException(ErrorCode.JOB_NOT_FOUND));
+        JobPosting jp = jobPostingRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.JOB_NOT_FOUND));
 
-        List<String> techStacks = jp.getJobPostingTechStacks().stream()
-                .map(jpt -> jpt.getTechStack().getName())
-                .toList();
-        List<String> educations = jp.getJobPostingEducations().stream()
-                .map(jpe -> jpe.getEducation().getSchool())
-                .toList();
-        List<String> careers = jp.getJobPostingCareers().stream()
-                .map(jpc -> jpc.getCareer().getCompany())
-                .toList();
+        List<String> techStacks = jp.getJobPostingTechStacks().stream().map(jpt -> jpt.getTechStack().getName()).toList();
+        List<String> educations = jp.getJobPostingEducations().stream().map(jpe -> jpe.getEducation().getSchool()).toList();
+        List<String> careers = jp.getJobPostingCareers().stream().map(jpc -> jpc.getCareer().getCompany()).toList();
 
-        return new JobPostingDetailRs(
-                jp.getJobPostingId(), jp.getTitle(), jp.getDescription(), jp.getPositionName(),
-                jp.getEmploymentType(), jp.getLocation(), jp.getDepartment(), jp.getQuantity(),
-                jp.getQualification(), jp.getRequiredCompetency(), jp.getPreference(),
-                jp.getStatusType(), jp.getSalary(), jp.getWorkType(),
-                jp.getOpeningDatetime(), jp.getClosingDatetime(),
-                jp.getCreatedDatetime(), jp.getModifiedDatetime(),
-                techStacks, educations, careers);
+        return new JobPostingDetailRs(jp.getJobPostingId(), jp.getTitle(), jp.getDescription(), jp.getPositionName(), jp.getEmploymentType(), jp.getLocation(), jp.getDepartment(), jp.getQuantity(), jp.getQualification(), jp.getRequiredCompetency(), jp.getPreference(), jp.getStatusType(), jp.getSalary(), jp.getWorkType(), jp.getOpeningDatetime(), jp.getClosingDatetime(), jp.getCreatedDatetime(), jp.getModifiedDatetime(), techStacks, educations, careers);
     }
 
     @Transactional
     public void deleteJobPosting(Integer id) {
-        JobPosting jobPosting = jobPostingRepository.findById(id)
-                .orElseThrow(() -> new CustomException(ErrorCode.JOB_NOT_FOUND));
+        JobPosting jobPosting = jobPostingRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.JOB_NOT_FOUND));
         jobPostingRepository.delete(jobPosting);
     }
 
     private JobPosting createJobPosting(JobPostingCreateRq rq) {
-        return JobPosting.builder()
-                .title(rq.title())
-                .description(rq.description())
-                .positionName(rq.positionName())
-                .employmentType(rq.employmentType())
-                .location(rq.location())
-                .department(rq.department())
-                .quantity(rq.quantity())
-                .qualification(rq.qualification())
-                .requiredCompetency(rq.requiredCompetency())
-                .preference(rq.preference())
-                .salary(rq.salary())
-                .workType(rq.workType())
-                .build();
+        return JobPosting.builder().title(rq.title()).description(rq.description()).positionName(rq.positionName()).employmentType(rq.employmentType()).location(rq.location()).department(rq.department()).quantity(rq.quantity()).qualification(rq.qualification()).requiredCompetency(rq.requiredCompetency()).preference(rq.preference()).salary(rq.salary()).workType(rq.workType()).build();
     }
 
     private User getCurrentUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        return userRepository.findByEmail(email).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
 }
