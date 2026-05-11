@@ -30,12 +30,7 @@ public class UserService {
             throw new CustomException(ErrorCode.INVALID_COMPANY_KEY);
         }
         isEmailDuplicate(adminSignUpRq.email());
-        User user = User.builder()
-                .email(adminSignUpRq.email())
-                .password(passwordEncoder.encode(adminSignUpRq.password()))
-                .name(adminSignUpRq.name())
-                .roleType(RoleType.ADMIN)
-                .build();
+        User user = User.of(adminSignUpRq.email(), passwordEncoder.encode(adminSignUpRq.password()), adminSignUpRq.name(), RoleType.ADMIN);
         userRepository.save(user);
     }
 
@@ -43,7 +38,7 @@ public class UserService {
     @Transactional
     public void signUp(SignUpRq signUpRq) {
         isEmailDuplicate(signUpRq.email());
-        User user = createUserEntity(signUpRq);
+        User user = User.of(signUpRq.email(), passwordEncoder.encode(signUpRq.password()), signUpRq.name(), RoleType.USER);
         userRepository.save(user);
     }
 
@@ -52,15 +47,5 @@ public class UserService {
         if (userRepository.existsByEmail(email)) {
             throw new CustomException(ErrorCode.DUPLICATED_EMAIL);
         }
-    }
-
-    // User 엔티티 생성
-    private User createUserEntity(SignUpRq signUpRq) {
-        return User.builder()
-                .email(signUpRq.email())
-                .password(passwordEncoder.encode(signUpRq.password()))
-                .name(signUpRq.name())
-                .roleType(RoleType.USER)
-                .build();
     }
 }
