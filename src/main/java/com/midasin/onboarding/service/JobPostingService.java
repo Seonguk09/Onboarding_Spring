@@ -3,9 +3,12 @@ package com.midasin.onboarding.service;
 import com.midasin.onboarding.common.config.exception.CustomException;
 import com.midasin.onboarding.common.config.exception.ErrorCode;
 import com.midasin.onboarding.domain.JobPosting;
+import com.midasin.onboarding.domain.User;
 import com.midasin.onboarding.dto.JobPostingCreateRq;
 import com.midasin.onboarding.repository.JobPostingRepository;
+import com.midasin.onboarding.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,10 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class JobPostingService {
 
     private final JobPostingRepository jobPostingRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public void saveJobPosting(JobPostingCreateRq rq) {
         JobPosting jobPosting = createJobPosting(rq);
+        jobPosting.changeCreateUser(getCurrentUser());
         jobPostingRepository.save(jobPosting);
     }
 
@@ -38,6 +43,7 @@ public class JobPostingService {
         jobPosting.setPreference(rq.preference());
         jobPosting.setSalary(rq.salary());
         jobPosting.setWorkType(rq.workType());
+        jobPosting.setModifiedUser(getCurrentUser());
     }
 
     @Transactional
@@ -47,7 +53,7 @@ public class JobPostingService {
         jobPostingRepository.delete(jobPosting);
     }
 
-    public JobPosting createJobPosting(JobPostingCreateRq rq){
+    private JobPosting createJobPosting(JobPostingCreateRq rq) {
         return JobPosting.builder()
                 .title(rq.title())
                 .description(rq.description())
@@ -62,5 +68,11 @@ public class JobPostingService {
                 .salary(rq.salary())
                 .workType(rq.workType())
                 .build();
+    }
+
+    private User getCurrentUser() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
 }
