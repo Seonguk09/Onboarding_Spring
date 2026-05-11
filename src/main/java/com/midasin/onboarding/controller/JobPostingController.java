@@ -1,6 +1,7 @@
 package com.midasin.onboarding.controller;
 
 import com.midasin.onboarding.common.ApiResponse;
+import com.midasin.onboarding.domain.JobPosting;
 import com.midasin.onboarding.dto.JobPostingCreateRq;
 import com.midasin.onboarding.service.JobPostingService;
 import jakarta.validation.Valid;
@@ -19,13 +20,13 @@ public class JobPostingController {
     }
 
     @PutMapping("/admin/jobPosting/{id}")
-    public ApiResponse<String> updateJobPosting(@PathVariable("id") Integer id, @RequestBody @Valid JobPostingCreateRq jobPostingCreateRq) {
+    public ApiResponse<String> updateJobPosting(@PathVariable Integer id, @RequestBody @Valid JobPostingCreateRq jobPostingCreateRq) {
         jobPostingService.updateJobPosting(id, jobPostingCreateRq);
         return ApiResponse.success(200, "채용 공고 수정 성공", null);
     }
 
     @DeleteMapping("/admin/jobPosting/{id}")
-    public ApiResponse<String> deleteJobPosting(@PathVariable("id") Integer id) {
+    public ApiResponse<String> deleteJobPosting(@PathVariable Integer id) {
         jobPostingService.deleteJobPosting(id);
         return ApiResponse.success(200, "채용 공고 삭제 성공", null);
     }
