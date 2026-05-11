@@ -9,6 +9,8 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
+import static io.jsonwebtoken.Jwts.SIG.HS256;
+
 @Component
 public class JWTUtil {
 
@@ -16,7 +18,7 @@ public class JWTUtil {
 
     // 생성자에서 application.properties에 저장된 SecretKey 값을 가져와 설정
     public JWTUtil(@Value("${spring.jwt.secret}") String secret) {
-        secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
+        secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), HS256.key().build().getAlgorithm());
     }
 
     // JWT에서 이메일 추출
@@ -51,8 +53,8 @@ public class JWTUtil {
                 .before(new Date());
     }
 
-     // JWT 생성 메서드
-     // - username, role(권한), 만료 시간(expiredMs)을 포함한 JWT 발급
+    // JWT 생성 메서드
+    // - username, role(권한), 만료 시간(expiredMs)을 포함한 JWT 발급
     public String createJwt(String username, String role, Long expiredMs) {
         return Jwts.builder()
                 .claim("email", username)
