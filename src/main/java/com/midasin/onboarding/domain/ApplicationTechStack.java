@@ -5,18 +5,18 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "job_posting_tech_stack")
+@Table(name = "application_tech_stack")
 @Getter
 @Setter
-public class JobPostingTechStack {
+public class ApplicationTechStack {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer jobPostingTechStackId;
+    private Integer applicationTechStackId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "job_posting_id")
-    private JobPosting jobPosting;
+    @JoinColumn(name = "application_id")
+    private Application application;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tech_stack_id")

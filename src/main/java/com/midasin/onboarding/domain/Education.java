@@ -30,5 +30,9 @@ public class Education {
     @Enumerated(EnumType.STRING)
     @Column(length = 10)
     private CurrentType currentType;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "application_id")
+    private Application application;
 }
 
