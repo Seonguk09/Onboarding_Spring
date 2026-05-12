@@ -22,6 +22,11 @@ public class JobPostingController {
         return ApiResponse.success(200, "채용 공고 목록 조회 성공", jobPostingService.getJobPostingList());
     }
 
+    @GetMapping("/jobPosting/page")
+    public ApiResponse<List<JobPostingListRs>> getJobPostingsWithPaging(@RequestParam int page, @RequestParam(defaultValue = "10") int size) {
+        return ApiResponse.success(200, "채용 공고 목록 조회 성공", jobPostingService.getJobPostingWithPaging(page, size).getContent().stream().map(jp -> new JobPostingListRs(jp.getJobPostingId(), jp.getTitle(), jp.getPositionName(), jp.getEmploymentType(), jp.getLocation(), jp.getDepartment(), jp.getStatusType(), jp.getSalary(), jp.getWorkType(), jp.getOpeningDatetime(), jp.getClosingDatetime())).toList());
+    }
+
     @GetMapping("/jobPosting/{id}")
     public ApiResponse<JobPostingDetailRs> getJobPosting(@PathVariable Integer id) {
         return ApiResponse.success(200, "채용 공고 상세 조회 성공", jobPostingService.getJobPosting(id));

@@ -11,6 +11,8 @@ import com.midasin.onboarding.dto.JobPostingStatusChangeRq;
 import com.midasin.onboarding.repository.JobPostingRepository;
 import com.midasin.onboarding.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +50,12 @@ public class JobPostingService {
         JobPosting jp = jobPostingRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.JOB_NOT_FOUND));
 
         return new JobPostingDetailRs(jp.getJobPostingId(), jp.getTitle(), jp.getDescription(), jp.getPositionName(), jp.getEmploymentType(), jp.getLocation(), jp.getDepartment(), jp.getQuantity(), jp.getQualification(), jp.getRequiredCompetency(), jp.getPreference(), jp.getStatusType(), jp.getSalary(), jp.getWorkType(), jp.getOpeningDatetime(), jp.getClosingDatetime(), jp.getCreatedDatetime(), jp.getModifiedDatetime());
+    }
+
+    @Transactional(readOnly = true)
+    public Page<JobPosting> getJobPostingWithPaging(int page, int size){
+        Pageable pageable = Pageable.ofSize(size).withPage(page);
+        return jobPostingRepository.findAll(pageable);
     }
 
     @Transactional
