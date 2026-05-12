@@ -4,6 +4,7 @@ import com.midasin.onboarding.common.config.exception.CustomException;
 import com.midasin.onboarding.common.config.exception.ErrorCode;
 import com.midasin.onboarding.domain.*;
 import com.midasin.onboarding.dto.ApplicationApplyRq;
+import com.midasin.onboarding.dto.ApplicationListRs;
 import com.midasin.onboarding.dto.ApplicationStatusChangeRq;
 import com.midasin.onboarding.repository.ApplicationRepository;
 import com.midasin.onboarding.repository.JobPostingRepository;
@@ -11,6 +12,7 @@ import com.midasin.onboarding.repository.TechStackRepository;
 import com.midasin.onboarding.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -97,5 +100,14 @@ public class ApplicationService {
         }
 
         application.uploadFile(savePath.toString());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ApplicationListRs> getApplicationsByJobPostingId(Integer jobPostingId, int page, int size) {
+        Pageable pageable = Pageable.ofSize(size).withPage(page);
+        return applicationRepository.findAllByJobPosting_JobPostingId(jobPostingId, pageable)
+                .stream()
+                .map(ApplicationListRs::from)
+                .toList();
     }
 }
