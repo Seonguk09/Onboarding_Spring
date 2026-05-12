@@ -112,6 +112,7 @@ public class JobPosting {
         jobPosting.requiredCompetency = requiredCompetency;
         jobPosting.preference = preference;
         jobPosting.statusType = StatusType.OPEN;
+        jobPosting.openingDatetime = LocalDateTime.now();
         jobPosting.salary = salary;
         jobPosting.workType = workType;
         jobPosting.closingDatetime = closingDatetime;
