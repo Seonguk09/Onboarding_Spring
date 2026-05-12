@@ -6,7 +6,9 @@ import com.midasin.onboarding.dto.ApplicationStatusChangeRq;
 import com.midasin.onboarding.service.ApplicationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,4 +27,9 @@ public class ApplicationController {
         return ApiResponse.success(200, "지원 상태 변경 성공", null);
     }
 
+    @PostMapping(value = "/application/upload/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ApiResponse<String> uploadApplicationFile(@PathVariable Integer id, @RequestPart("file") MultipartFile file) {
+        applicationService.uploadApplicationFile(id, file);
+        return ApiResponse.success(200, "파일 업로드 성공", null);
+    }
 }

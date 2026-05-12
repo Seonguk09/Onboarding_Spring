@@ -145,4 +145,9 @@ public class Application {
         this.statusModifyDatetime = LocalDateTime.now();
         this.modifiedUser = modifiedUser;
     }
+
+    public void uploadFile(String file) {
+        this.file = file;
+        this.modifiedDatetime = LocalDateTime.now();
+    }
 }

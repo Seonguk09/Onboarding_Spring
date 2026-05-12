@@ -10,9 +10,17 @@ import com.midasin.onboarding.repository.JobPostingRepository;
 import com.midasin.onboarding.repository.TechStackRepository;
 import com.midasin.onboarding.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +30,9 @@ public class ApplicationService {
     private final JobPostingRepository jobPostingRepository;
     private final UserRepository userRepository;
     private final TechStackRepository techStackRepository;
+
+    @Value("${file.dir}")
+    private String fileDir;
 
     @Transactional
     public void applyForJobPosting(ApplicationApplyRq rq) {
@@ -66,5 +77,25 @@ public class ApplicationService {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    @Transactional
+    public void uploadApplicationFile(Integer applicationId, MultipartFile file) {
+        Application application = applicationRepository.findById(applicationId).orElseThrow(() -> new CustomException(ErrorCode.APPLICATION_NOT_FOUND));
+        if (file.isEmpty()) {
+            throw new CustomException(ErrorCode.FILE_NOT_FOUND);
+        }
+        String savedName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        Path saveDir = Paths.get(fileDir);
+        Path savePath = saveDir.resolve(savedName);
+
+        try {
+            Files.createDirectories(saveDir);
+            Files.copy(file.getInputStream(), savePath);
+        } catch (IOException e) {
+            throw new RuntimeException("파일 저장 실패", e);
+        }
+
+        application.uploadFile(savePath.toString());
     }
 }
