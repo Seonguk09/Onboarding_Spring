@@ -21,4 +21,11 @@ public class ApplicationController {
         applicationService.applyForJobPosting(rq);
         return ApiResponse.success(201, "지원 성공", null);
     }
+
+    @PatchMapping("/application/{id}")
+    public ApiResponse<String> changeApplicationStatus(@PathVariable Integer id, @RequestBody @Valid ApplicationStatusChangeRq rq) {
+        applicationService.changeApplicationStatus(id, rq);
+        return ApiResponse.success(200, "지원 상태 변경 성공", null);
+    }
+
 }

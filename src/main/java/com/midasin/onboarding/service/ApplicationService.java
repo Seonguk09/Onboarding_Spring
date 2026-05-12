@@ -3,7 +3,9 @@ package com.midasin.onboarding.service;
 import com.midasin.onboarding.common.config.exception.CustomException;
 import com.midasin.onboarding.common.config.exception.ErrorCode;
 import com.midasin.onboarding.domain.*;
+import com.midasin.onboarding.domain.enums.ApplicationStatusType;
 import com.midasin.onboarding.dto.ApplicationApplyRq;
+import com.midasin.onboarding.dto.ApplicationStatusChangeRq;
 import com.midasin.onboarding.repository.ApplicationRepository;
 import com.midasin.onboarding.repository.JobPostingRepository;
 import com.midasin.onboarding.repository.TechStackRepository;
@@ -31,42 +33,34 @@ public class ApplicationService {
 
         if (rq.educations() != null) {
             for (ApplicationApplyRq.EducationRq educationRq : rq.educations()) {
-                Education education = new Education();
-                education.setSchool(educationRq.school());
-                education.setMajor(educationRq.major());
-                education.setStartDatetime(educationRq.startDatetime());
-                education.setEndDatetime(educationRq.endDatetime());
-                education.setCurrentType(educationRq.currentType());
-                application.addEducation(education);
+                application.addEducation(educationRq.school(), educationRq.major(), educationRq.startDatetime(), educationRq.endDatetime(), educationRq.currentType());
             }
         }
 
         if (rq.careers() != null) {
             for (ApplicationApplyRq.CareerRq careerRq : rq.careers()) {
-                Career career = new Career();
-                career.setCompany(careerRq.company());
-                career.setRole(careerRq.role());
-                career.setTeam(careerRq.team());
-                career.setPosition(careerRq.position());
-                career.setStartDate(careerRq.startDate());
-                career.setEndDate(careerRq.endDate());
-                career.setCurrentYn(careerRq.currentYn());
-                career.setDescription(careerRq.description());
-                application.addCareer(career);
+                application.addCareer(careerRq.company(), careerRq.role(), careerRq.team(), careerRq.position(), careerRq.startDate(), careerRq.endDate(), careerRq.currentYn(), careerRq.description());
             }
         }
 
         if (rq.techStacks() != null) {
             for (ApplicationApplyRq.TechStackRq techStackRq : rq.techStacks()) {
-                TechStack techStack = new TechStack();
-                techStack.setName(techStackRq.name());
-                techStack.setProficiencyType(techStackRq.proficiencyType());
-                techStackRepository.save(techStack);
-                application.addTechStack(techStack);
+                TechStack techStack = techStackRepository.findByName(techStackRq.name()).orElseGet(() -> techStackRepository.save(TechStack.of(techStackRq.name(), techStackRq.proficiencyType())));
+                ApplicationTechStack applicationTechStack = ApplicationTechStack.of(application, techStack);
+                application.addApplicationTechStack(applicationTechStack);
             }
         }
 
         applicationRepository.save(application);
+    }
+
+    @Transactional
+    public void changeApplicationStatus(Integer applicationId, ApplicationStatusChangeRq rq) {
+        Application application = applicationRepository.findById(applicationId).orElseThrow(() -> new CustomException(ErrorCode.APPLICATION_NOT_FOUND));
+
+        User user = getCurrentUser();
+
+        application.updateStatus(rq.statusType(), user);
     }
 
     private User getCurrentUser() {
