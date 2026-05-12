@@ -37,6 +37,12 @@ public class ApplicationController {
         return ApiResponse.success(200, "파일 업로드 성공", null);
     }
 
+    @PutMapping("/application/{id}")
+    public ApiResponse<String> updateApplication(@PathVariable Integer id, @RequestBody @Valid ApplicationApplyRq rq) {
+        applicationService.updateApplication(id, rq);
+        return ApiResponse.success(200, "지원서 수정 성공", null);
+    }
+
     // 전체 페이지 조회이기 때문에 admin u
     @GetMapping("/admin/applications")
     public ApiResponse<List<ApplicationListRs>> getApplicationsWithPaging(@RequestParam int jobPostingId, @RequestParam int page, @RequestParam(defaultValue = "10") int size) {

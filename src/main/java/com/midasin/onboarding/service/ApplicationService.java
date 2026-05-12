@@ -117,4 +117,35 @@ public class ApplicationService {
                 application.getCareers().stream().map(c -> new ApplicationDetailRs.CareerDetailRs(c.getCompany(), c.getRole(), c.getTeam(), c.getPosition(), c.getStartDate(), c.getEndDate(), c.getCurrentYn(), c.getDescription())).toList(),
                 application.getApplicationTechStacks().stream().map(t -> new ApplicationDetailRs.ApplicationTechStackDetailRs(t.getTechStack().getName(), t.getTechStack().getProficiencyType())).toList());
     }
+
+    @Transactional
+    public void updateApplication(Integer id, ApplicationApplyRq rq){
+        Application application = applicationRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.APPLICATION_NOT_FOUND));
+
+        application.update(rq.contact(), rq.portfolio(), rq.applicationPathType());
+
+        application.getEducations().clear();
+        application.getCareers().clear();
+        application.getApplicationTechStacks().clear();
+
+        if (rq.educations() != null) {
+            for (ApplicationApplyRq.EducationRq educationRq : rq.educations()) {
+                application.addEducation(educationRq.school(), educationRq.major(), educationRq.startDatetime(), educationRq.endDatetime(), educationRq.currentType());
+            }
+        }
+
+        if (rq.careers() != null) {
+            for (ApplicationApplyRq.CareerRq careerRq : rq.careers()) {
+                application.addCareer(careerRq.company(), careerRq.role(), careerRq.team(), careerRq.position(), careerRq.startDate(), careerRq.endDate(), careerRq.currentYn(), careerRq.description());
+            }
+        }
+
+        if (rq.techStacks() != null) {
+            for (ApplicationApplyRq.TechStackRq techStackRq : rq.techStacks()) {
+                TechStack techStack = techStackRepository.findByName(techStackRq.name()).orElseGet(() -> techStackRepository.save(TechStack.of(techStackRq.name(), techStackRq.proficiencyType())));
+                ApplicationTechStack applicationTechStack = ApplicationTechStack.of(application, techStack);
+                application.addApplicationTechStack(applicationTechStack);
+            }
+        }
+    }
 }

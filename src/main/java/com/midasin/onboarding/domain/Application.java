@@ -132,9 +132,8 @@ public class Application {
         return application;
     }
 
-    public void update(String contact, String file, String portfolio, ApplicationPathType applicationPathType) {
+    public void update(String contact, String portfolio, ApplicationPathType applicationPathType) {
         this.contact = contact;
-        this.file = file;
         this.portfolio = portfolio;
         this.applicationPathType = applicationPathType;
         this.statusModifyDatetime = LocalDateTime.now();
