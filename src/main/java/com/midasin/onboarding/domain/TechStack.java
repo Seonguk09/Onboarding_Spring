@@ -21,5 +21,12 @@ public class TechStack {
     @Enumerated(EnumType.STRING)
     @Column(length = 10)
     private ProficiencyType proficiencyType;
+
+    public static TechStack of(String name, ProficiencyType proficiencyType) {
+        TechStack techStack = new TechStack();
+        techStack.name = name;
+        techStack.proficiencyType = proficiencyType;
+        return techStack;
+    }
 }
 

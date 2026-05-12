@@ -7,6 +7,9 @@ import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.midasin.onboarding.domain.enums.CurrentType;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -88,30 +91,23 @@ public class Application {
     }
 
     // 연관관계 편의 메서드 - 학력, 경력, 기술 스택 추가/삭제
-    public void addEducation(Education education) {
-        education.setApplication(this);
-        this.educations.add(education);
+    public void addEducation(String school, String major, LocalDateTime startDatetime, LocalDateTime endDatetime, CurrentType currentType) {
+        this.educations.add(Education.of(this, school, major, startDatetime, endDatetime, currentType));
     }
 
     public void removeEducation(Education education) {
         this.educations.remove(education);
-        education.setApplication(null);
     }
 
-    public void addCareer(Career career) {
-        career.setApplication(this);
-        this.careers.add(career);
+    public void addCareer(String company, String role, String team, String position, LocalDate startDate, LocalDate endDate, Boolean currentYn, String description) {
+        this.careers.add(Career.of(this, company, role, team, position, startDate, endDate, currentYn, description));
     }
 
     public void removeCareer(Career career) {
         this.careers.remove(career);
-        career.setApplication(null);
     }
 
-    public void addTechStack(TechStack techStack) {
-        ApplicationTechStack applicationTechStack = new ApplicationTechStack();
-        applicationTechStack.setApplication(this);
-        applicationTechStack.setTechStack(techStack);
+    public void addApplicationTechStack(ApplicationTechStack applicationTechStack) {
         this.applicationTechStacks.add(applicationTechStack);
     }
 
@@ -137,4 +133,17 @@ public class Application {
         return application;
     }
 
+    public void update(String contact, String file, String portfolio, ApplicationPathType applicationPathType) {
+        this.contact = contact;
+        this.file = file;
+        this.portfolio = portfolio;
+        this.applicationPathType = applicationPathType;
+        this.statusModifyDatetime = LocalDateTime.now();
+    }
+
+    public void updateStatus(ApplicationStatusType statusType, User modifiedUser) {
+        this.statusType = statusType;
+        this.statusModifyDatetime = LocalDateTime.now();
+        this.modifiedUser = modifiedUser;
+    }
 }

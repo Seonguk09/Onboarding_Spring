@@ -9,7 +9,6 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "career")
 @Getter
-@Setter
 public class Career {
 
     @Id
@@ -40,5 +39,19 @@ public class Career {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "application_id")
     private Application application;
+
+    public static Career of(Application application, String company, String role, String team, String position, LocalDate startDate, LocalDate endDate, Boolean currentYn, String description) {
+        Career career = new Career();
+        career.application = application;
+        career.company = company;
+        career.role = role;
+        career.team = team;
+        career.position = position;
+        career.startDate = startDate;
+        career.endDate = endDate;
+        career.currentYn = currentYn;
+        career.description = description;
+        return career;
+    }
 }
 

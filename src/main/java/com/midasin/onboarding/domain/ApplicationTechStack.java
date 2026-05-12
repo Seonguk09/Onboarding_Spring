@@ -7,7 +7,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "application_tech_stack")
 @Getter
-@Setter
 public class ApplicationTechStack {
 
     @Id
@@ -22,5 +21,11 @@ public class ApplicationTechStack {
     @JoinColumn(name = "tech_stack_id")
     private TechStack techStack;
 
+    static public ApplicationTechStack of(Application application, TechStack techStack) {
+        ApplicationTechStack applicationTechStack = new ApplicationTechStack();
+        applicationTechStack.application = application;
+        applicationTechStack.techStack = techStack;
+        return applicationTechStack;
+    }
 }
 
