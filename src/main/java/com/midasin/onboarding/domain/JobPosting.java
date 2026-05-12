@@ -4,7 +4,7 @@ import com.midasin.onboarding.domain.enums.EmploymentType;
 import com.midasin.onboarding.domain.enums.StatusType;
 import com.midasin.onboarding.domain.enums.WorkType;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -17,10 +17,6 @@ import java.util.List;
 @Table(name = "job_posting")
 @EntityListeners(AuditingEntityListener.class)
 @Getter
-@Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class JobPosting {
 
     @Id
@@ -97,5 +93,58 @@ public class JobPosting {
         if (!createdUser.getJobPostings().contains(this)) {
             createdUser.getJobPostings().add(this);
         }
+    }
+
+    public static JobPosting of(String title, String description, String positionName, EmploymentType employmentType,
+                                String location, String department, String quantity, String qualification,
+                                String requiredCompetency, String preference,
+                                String salary, WorkType workType,
+                                LocalDateTime closingDatetime) {
+        JobPosting jobPosting = new JobPosting();
+        jobPosting.title = title;
+        jobPosting.description = description;
+        jobPosting.positionName = positionName;
+        jobPosting.employmentType = employmentType;
+        jobPosting.location = location;
+        jobPosting.department = department;
+        jobPosting.quantity = quantity;
+        jobPosting.qualification = qualification;
+        jobPosting.requiredCompetency = requiredCompetency;
+        jobPosting.preference = preference;
+        jobPosting.statusType = StatusType.OPEN;
+        jobPosting.openingDatetime = LocalDateTime.now();
+        jobPosting.salary = salary;
+        jobPosting.workType = workType;
+        jobPosting.closingDatetime = closingDatetime;
+        return jobPosting;
+    }
+
+    public void update(String title, String description, String positionName, EmploymentType employmentType,
+                       String location, String department, String quantity, String qualification,
+                       String requiredCompetency, String preference, String salary, WorkType workType, LocalDateTime closingDatetime) {
+        this.title = title;
+        this.description = description;
+        this.positionName = positionName;
+        this.employmentType = employmentType;
+        this.location = location;
+        this.department = department;
+        this.quantity = quantity;
+        this.qualification = qualification;
+        this.requiredCompetency = requiredCompetency;
+        this.preference = preference;
+        this.salary = salary;
+        this.workType = workType;
+        this.closingDatetime = closingDatetime;
+    }
+
+    public void updateStatus(StatusType statusType) {
+        this.statusType = statusType;
+        if (statusType == StatusType.OPEN) {
+            this.openingDatetime = LocalDateTime.now();
+        }
+    }
+
+    public void changeModifiedUser(User modifiedUser) {
+        this.modifiedUser = modifiedUser;
     }
 }
