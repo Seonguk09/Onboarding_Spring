@@ -138,6 +138,9 @@ public class JobPosting {
 
     public void updateStatus(StatusType statusType) {
         this.statusType = statusType;
+        if (statusType == StatusType.OPEN) {
+            this.openingDatetime = LocalDateTime.now();
+        }
     }
 
     public void changeModifiedUser(User modifiedUser) {
