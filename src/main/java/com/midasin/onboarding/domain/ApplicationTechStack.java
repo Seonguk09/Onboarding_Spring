@@ -1,12 +1,15 @@
 package com.midasin.onboarding.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "application_tech_stack")
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ApplicationTechStack {
 
     @Id

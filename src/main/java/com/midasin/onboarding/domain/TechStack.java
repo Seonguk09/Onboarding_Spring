@@ -2,13 +2,15 @@ package com.midasin.onboarding.domain;
 
 import com.midasin.onboarding.domain.enums.ProficiencyType;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "tech_stack")
 @Getter
-@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TechStack {
 
     @Id

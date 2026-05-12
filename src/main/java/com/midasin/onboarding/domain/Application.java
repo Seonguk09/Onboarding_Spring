@@ -3,7 +3,9 @@ package com.midasin.onboarding.domain;
 import com.midasin.onboarding.domain.enums.ApplicationPathType;
 import com.midasin.onboarding.domain.enums.ApplicationStatusType;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -18,6 +20,7 @@ import java.util.List;
 @Table(name = "application", uniqueConstraints = {@UniqueConstraint(columnNames = {"job_posting_id", "create_user_id"})})
 // 지원서의 경우 동일한 구인공고에 대해 동일한 사용자가 여러 번 지원할 수 없도록 unique 제약 조건 추가
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 public class Application {
 

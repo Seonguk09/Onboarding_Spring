@@ -1,7 +1,9 @@
 package com.midasin.onboarding.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -9,6 +11,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "career")
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Career {
 
     @Id
