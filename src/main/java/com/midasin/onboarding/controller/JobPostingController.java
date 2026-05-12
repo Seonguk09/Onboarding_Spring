@@ -4,6 +4,7 @@ import com.midasin.onboarding.common.ApiResponse;
 import com.midasin.onboarding.dto.JobPostingCreateRq;
 import com.midasin.onboarding.dto.JobPostingDetailRs;
 import com.midasin.onboarding.dto.JobPostingListRs;
+import com.midasin.onboarding.dto.JobPostingStatusChangeRq;
 import com.midasin.onboarding.service.JobPostingService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -42,5 +43,11 @@ public class JobPostingController {
     public ApiResponse<String> deleteJobPosting(@PathVariable Integer id) {
         jobPostingService.deleteJobPosting(id);
         return ApiResponse.success(200, "채용 공고 삭제 성공", null);
+    }
+
+    @PatchMapping("/admin/jobPosting/{id}/status")
+    public ApiResponse<String> changeJobPostingStatus(@PathVariable Integer id, @Valid @RequestBody JobPostingStatusChangeRq jobPostingStatusChangeRq) {
+        jobPostingService.changeJobPostingStatus(id, jobPostingStatusChangeRq);
+        return ApiResponse.success(200, "채용 공고 상태 변경 성공", null);
     }
 }

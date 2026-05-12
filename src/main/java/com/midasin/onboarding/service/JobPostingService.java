@@ -7,6 +7,7 @@ import com.midasin.onboarding.domain.User;
 import com.midasin.onboarding.dto.JobPostingCreateRq;
 import com.midasin.onboarding.dto.JobPostingDetailRs;
 import com.midasin.onboarding.dto.JobPostingListRs;
+import com.midasin.onboarding.dto.JobPostingStatusChangeRq;
 import com.midasin.onboarding.repository.JobPostingRepository;
 import com.midasin.onboarding.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -65,6 +66,13 @@ public class JobPostingService {
     public void deleteJobPosting(Integer id) {
         JobPosting jobPosting = jobPostingRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.JOB_NOT_FOUND));
         jobPostingRepository.delete(jobPosting);
+    }
+
+    @Transactional
+    public void changeJobPostingStatus(Integer id, JobPostingStatusChangeRq rq) {
+        JobPosting jobPosting = jobPostingRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.JOB_NOT_FOUND));
+        jobPosting.setStatusType(rq.statusType());
+        jobPosting.setModifiedUser(getCurrentUser());
     }
 
     private JobPosting createJobPosting(JobPostingCreateRq rq) {
