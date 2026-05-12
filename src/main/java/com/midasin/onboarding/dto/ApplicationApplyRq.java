@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public record ApplicationApplyRq(@NotNull Integer jobPostingId, String contact, String file, String portfolio,
+public record ApplicationApplyRq(@NotNull Integer jobPostingId, String contact, String portfolio,
                                  ApplicationPathType applicationPathType, List<EducationRq> educations,
                                  List<CareerRq> careers, List<TechStackRq> techStacks) {
     public record EducationRq(String school, String major, LocalDateTime startDatetime, LocalDateTime endDatetime,

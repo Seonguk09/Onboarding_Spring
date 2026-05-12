@@ -3,7 +3,6 @@ package com.midasin.onboarding.service;
 import com.midasin.onboarding.common.config.exception.CustomException;
 import com.midasin.onboarding.common.config.exception.ErrorCode;
 import com.midasin.onboarding.domain.*;
-import com.midasin.onboarding.domain.enums.ApplicationStatusType;
 import com.midasin.onboarding.dto.ApplicationApplyRq;
 import com.midasin.onboarding.dto.ApplicationStatusChangeRq;
 import com.midasin.onboarding.repository.ApplicationRepository;
@@ -29,7 +28,7 @@ public class ApplicationService {
         JobPosting jobPosting = jobPostingRepository.findById(rq.jobPostingId()).orElseThrow(() -> new CustomException(ErrorCode.JOB_NOT_FOUND));
         User user = getCurrentUser();
 
-        Application application = Application.of(rq.contact(), rq.file(), rq.portfolio(), rq.applicationPathType(), jobPosting, user);
+        Application application = Application.of(rq.contact(), rq.portfolio(), rq.applicationPathType(), jobPosting, user);
 
         if (rq.educations() != null) {
             for (ApplicationApplyRq.EducationRq educationRq : rq.educations()) {

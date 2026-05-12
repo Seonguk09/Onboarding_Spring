@@ -120,10 +120,9 @@ public class Application {
         }
     }
 
-    public static Application of(String contact, String file, String portfolio, ApplicationPathType applicationPathType, JobPosting jobPosting, User createdUser) {
+    public static Application of(String contact, String portfolio, ApplicationPathType applicationPathType, JobPosting jobPosting, User createdUser) {
         Application application = new Application();
         application.contact = contact;
-        application.file = file;
         application.portfolio = portfolio;
         application.applyDatetime = LocalDateTime.now();
         application.applicationPathType = applicationPathType;
