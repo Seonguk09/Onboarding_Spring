@@ -42,7 +42,8 @@ public class JobPostingService {
 
     @Transactional(readOnly = true)
     public List<JobPostingListRs> getJobPostingList() {
-        return jobPostingRepository.findAll().stream().map(jp -> new JobPostingListRs(jp.getJobPostingId(), jp.getTitle(), jp.getPositionName(), jp.getEmploymentType(), jp.getLocation(), jp.getDepartment(), jp.getStatusType(), jp.getSalary(), jp.getWorkType(), jp.getOpeningDatetime(), jp.getClosingDatetime())).toList();
+        return jobPostingRepository.findAll()
+                .stream().map(jp -> new JobPostingListRs(jp.getJobPostingId(), jp.getTitle(), jp.getPositionName(), jp.getEmploymentType(), jp.getLocation(), jp.getDepartment(), jp.getStatusType(), jp.getSalary(), jp.getWorkType(), jp.getOpeningDatetime(), jp.getClosingDatetime())).toList();
     }
 
     @Transactional(readOnly = true)
@@ -53,7 +54,7 @@ public class JobPostingService {
     }
 
     @Transactional(readOnly = true)
-    public Page<JobPosting> getJobPostingWithPaging(int page, int size){
+    public Page<JobPosting> getJobPostingWithPaging(int page, int size) {
         Pageable pageable = Pageable.ofSize(size).withPage(page);
         return jobPostingRepository.findAll(pageable);
     }
@@ -66,17 +67,20 @@ public class JobPostingService {
 
     @Transactional
     public void changeJobPostingStatus(Integer id, JobPostingStatusChangeRq rq) {
-        JobPosting jobPosting = jobPostingRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.JOB_NOT_FOUND));
+        JobPosting jobPosting = jobPostingRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.JOB_NOT_FOUND));
         jobPosting.updateStatus(rq.statusType());
         jobPosting.changeModifiedUser(getCurrentUser());
     }
 
     private JobPosting createJobPosting(JobPostingCreateRq rq) {
-        return JobPosting.of(rq.title(), rq.description(), rq.positionName(), rq.employmentType(), rq.location(), rq.department(), rq.quantity(), rq.qualification(), rq.requiredCompetency(), rq.preference(), rq.salary(), rq.workType(), rq.closingDatetime());
+        return JobPosting
+                .of(rq.title(), rq.description(), rq.positionName(), rq.employmentType(), rq.location(), rq.department(), rq.quantity(), rq.qualification(), rq.requiredCompetency(), rq.preference(), rq.salary(), rq.workType(), rq.closingDatetime());
     }
 
     private User getCurrentUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.findByEmail(email).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
 }
