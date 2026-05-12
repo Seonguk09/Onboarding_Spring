@@ -58,11 +58,7 @@ public class JobPostingService {
     public JobPostingDetailRs getJobPosting(Integer id) {
         JobPosting jp = jobPostingRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.JOB_NOT_FOUND));
 
-        List<String> techStacks = jp.getJobPostingTechStacks().stream().map(jpt -> jpt.getTechStack().getName()).toList();
-        List<String> educations = jp.getJobPostingEducations().stream().map(jpe -> jpe.getEducation().getSchool()).toList();
-        List<String> careers = jp.getJobPostingCareers().stream().map(jpc -> jpc.getCareer().getCompany()).toList();
-
-        return new JobPostingDetailRs(jp.getJobPostingId(), jp.getTitle(), jp.getDescription(), jp.getPositionName(), jp.getEmploymentType(), jp.getLocation(), jp.getDepartment(), jp.getQuantity(), jp.getQualification(), jp.getRequiredCompetency(), jp.getPreference(), jp.getStatusType(), jp.getSalary(), jp.getWorkType(), jp.getOpeningDatetime(), jp.getClosingDatetime(), jp.getCreatedDatetime(), jp.getModifiedDatetime(), techStacks, educations, careers);
+        return new JobPostingDetailRs(jp.getJobPostingId(), jp.getTitle(), jp.getDescription(), jp.getPositionName(), jp.getEmploymentType(), jp.getLocation(), jp.getDepartment(), jp.getQuantity(), jp.getQualification(), jp.getRequiredCompetency(), jp.getPreference(), jp.getStatusType(), jp.getSalary(), jp.getWorkType(), jp.getOpeningDatetime(), jp.getClosingDatetime(), jp.getCreatedDatetime(), jp.getModifiedDatetime());
     }
 
     @Transactional

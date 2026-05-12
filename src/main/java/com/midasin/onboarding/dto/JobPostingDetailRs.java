@@ -12,6 +12,5 @@ public record JobPostingDetailRs(Integer jobPostingId, String title, String desc
                                  String qualification, String requiredCompetency, String preference,
                                  StatusType statusType, String salary, WorkType workType, LocalDateTime openingDatetime,
                                  LocalDateTime closingDatetime, LocalDateTime createdDatetime,
-                                 LocalDateTime modifiedDatetime, List<String> techStacks, List<String> educations,
-                                 List<String> careers) {
+                                 LocalDateTime modifiedDatetime) {
 }
