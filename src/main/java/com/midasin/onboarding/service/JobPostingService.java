@@ -34,20 +34,8 @@ public class JobPostingService {
     @Transactional
     public void updateJobPosting(Integer id, JobPostingCreateRq rq) {
         JobPosting jobPosting = jobPostingRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.JOB_NOT_FOUND));
-
-        jobPosting.setTitle(rq.title());
-        jobPosting.setDescription(rq.description());
-        jobPosting.setPositionName(rq.positionName());
-        jobPosting.setEmploymentType(rq.employmentType());
-        jobPosting.setLocation(rq.location());
-        jobPosting.setDepartment(rq.department());
-        jobPosting.setQuantity(rq.quantity());
-        jobPosting.setQualification(rq.qualification());
-        jobPosting.setRequiredCompetency(rq.requiredCompetency());
-        jobPosting.setPreference(rq.preference());
-        jobPosting.setSalary(rq.salary());
-        jobPosting.setWorkType(rq.workType());
-        jobPosting.setModifiedUser(getCurrentUser());
+        jobPosting.update(rq.title(), rq.description(), rq.positionName(), rq.employmentType(), rq.location(), rq.department(), rq.quantity(), rq.qualification(), rq.requiredCompetency(), rq.preference(), rq.salary(), rq.workType(), rq.closingDatetime());
+        jobPosting.changeModifiedUser(getCurrentUser());
     }
 
     @Transactional(readOnly = true)
@@ -71,12 +59,12 @@ public class JobPostingService {
     @Transactional
     public void changeJobPostingStatus(Integer id, JobPostingStatusChangeRq rq) {
         JobPosting jobPosting = jobPostingRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.JOB_NOT_FOUND));
-        jobPosting.setStatusType(rq.statusType());
-        jobPosting.setModifiedUser(getCurrentUser());
+        jobPosting.updateStatus(rq.statusType());
+        jobPosting.changeModifiedUser(getCurrentUser());
     }
 
     private JobPosting createJobPosting(JobPostingCreateRq rq) {
-        return JobPosting.builder().title(rq.title()).description(rq.description()).positionName(rq.positionName()).employmentType(rq.employmentType()).location(rq.location()).department(rq.department()).quantity(rq.quantity()).qualification(rq.qualification()).requiredCompetency(rq.requiredCompetency()).preference(rq.preference()).salary(rq.salary()).workType(rq.workType()).build();
+        return JobPosting.of(rq.title(), rq.description(), rq.positionName(), rq.employmentType(), rq.location(), rq.department(), rq.quantity(), rq.qualification(), rq.requiredCompetency(), rq.preference(), rq.salary(), rq.workType(), rq.closingDatetime());
     }
 
     private User getCurrentUser() {
