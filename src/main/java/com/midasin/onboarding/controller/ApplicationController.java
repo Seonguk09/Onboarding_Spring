@@ -2,6 +2,7 @@ package com.midasin.onboarding.controller;
 
 import com.midasin.onboarding.common.ApiResponse;
 import com.midasin.onboarding.dto.ApplicationApplyRq;
+import com.midasin.onboarding.dto.ApplicationDetailRs;
 import com.midasin.onboarding.dto.ApplicationListRs;
 import com.midasin.onboarding.dto.ApplicationStatusChangeRq;
 import com.midasin.onboarding.service.ApplicationService;
@@ -42,4 +43,8 @@ public class ApplicationController {
         return ApiResponse.success(200, "지원서 목록 조회 성공", applicationService.getApplicationsByJobPostingId(jobPostingId, page, size));
     }
 
+    @GetMapping("application/{id}")
+    public ApiResponse<ApplicationDetailRs> getApplicationDetail(@PathVariable Integer id) {
+        return ApiResponse.success(200, "지원서 상세 조회 성공", applicationService.getApplicationById(id));
+    }
 }

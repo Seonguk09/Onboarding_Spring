@@ -4,6 +4,7 @@ import com.midasin.onboarding.common.config.exception.CustomException;
 import com.midasin.onboarding.common.config.exception.ErrorCode;
 import com.midasin.onboarding.domain.*;
 import com.midasin.onboarding.dto.ApplicationApplyRq;
+import com.midasin.onboarding.dto.ApplicationDetailRs;
 import com.midasin.onboarding.dto.ApplicationListRs;
 import com.midasin.onboarding.dto.ApplicationStatusChangeRq;
 import com.midasin.onboarding.repository.ApplicationRepository;
@@ -78,8 +79,7 @@ public class ApplicationService {
 
     private User getCurrentUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        return userRepository.findByEmail(email).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
 
     @Transactional
@@ -105,9 +105,16 @@ public class ApplicationService {
     @Transactional(readOnly = true)
     public List<ApplicationListRs> getApplicationsByJobPostingId(Integer jobPostingId, int page, int size) {
         Pageable pageable = Pageable.ofSize(size).withPage(page);
-        return applicationRepository.findAllByJobPosting_JobPostingId(jobPostingId, pageable)
-                .stream()
-                .map(ApplicationListRs::from)
-                .toList();
+        return applicationRepository.findAllByJobPosting_JobPostingId(jobPostingId, pageable).stream().map(ApplicationListRs::from).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public ApplicationDetailRs getApplicationById(Integer applicationId) {
+        Application application = applicationRepository.findById(applicationId).orElseThrow(() -> new CustomException(ErrorCode.APPLICATION_NOT_FOUND));
+
+        return new ApplicationDetailRs(application.getJobPosting().getJobPostingId(), application.getContact(), application.getFile(), application.getPortfolio(), application.getApplicationPathType(),
+                application.getEducations().stream().map(e -> new ApplicationDetailRs.EducationDetailRs(e.getSchool(), e.getMajor(), e.getStartDatetime(), e.getEndDatetime(), e.getCurrentType())).toList(),
+                application.getCareers().stream().map(c -> new ApplicationDetailRs.CareerDetailRs(c.getCompany(), c.getRole(), c.getTeam(), c.getPosition(), c.getStartDate(), c.getEndDate(), c.getCurrentYn(), c.getDescription())).toList(),
+                application.getApplicationTechStacks().stream().map(t -> new ApplicationDetailRs.ApplicationTechStackDetailRs(t.getTechStack().getName(), t.getTechStack().getProficiencyType())).toList());
     }
 }
