@@ -4,7 +4,6 @@ import com.midasin.onboarding.domain.enums.ApplicationPathType;
 import com.midasin.onboarding.domain.enums.ApplicationStatusType;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -124,4 +123,18 @@ public class Application {
             }
         }
     }
+
+    public static Application of(String contact, String file, String portfolio, ApplicationPathType applicationPathType, JobPosting jobPosting, User createdUser) {
+        Application application = new Application();
+        application.contact = contact;
+        application.file = file;
+        application.portfolio = portfolio;
+        application.applyDatetime = LocalDateTime.now();
+        application.applicationPathType = applicationPathType;
+        application.statusType = ApplicationStatusType.APPLIED;
+        application.changeJobPosting(jobPosting);
+        application.changeCreatedUser(createdUser);
+        return application;
+    }
+
 }
