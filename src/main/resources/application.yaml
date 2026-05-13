@@ -22,3 +22,5 @@ spring:
     secret: ${JWT_SECRET:midasin-onboarding-spring-secret-key-256bit-long}
   company:
     key: ${COMPANY_KEY:midasin-company-secret-key}
+file:
+  dir: ${FILE_UPLOAD_DIR:/tmp/uploads}

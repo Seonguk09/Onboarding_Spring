@@ -3,11 +3,15 @@ package com.midasin.onboarding.domain;
 import com.midasin.onboarding.domain.enums.ApplicationPathType;
 import com.midasin.onboarding.domain.enums.ApplicationStatusType;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.midasin.onboarding.domain.enums.CurrentType;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +20,7 @@ import java.util.List;
 @Table(name = "application", uniqueConstraints = {@UniqueConstraint(columnNames = {"job_posting_id", "create_user_id"})})
 // 지원서의 경우 동일한 구인공고에 대해 동일한 사용자가 여러 번 지원할 수 없도록 unique 제약 조건 추가
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 public class Application {
 
@@ -89,30 +94,23 @@ public class Application {
     }
 
     // 연관관계 편의 메서드 - 학력, 경력, 기술 스택 추가/삭제
-    public void addEducation(Education education) {
-        education.setApplication(this);
-        this.educations.add(education);
+    public void addEducation(String school, String major, LocalDateTime startDatetime, LocalDateTime endDatetime, CurrentType currentType) {
+        this.educations.add(Education.of(this, school, major, startDatetime, endDatetime, currentType));
     }
 
     public void removeEducation(Education education) {
         this.educations.remove(education);
-        education.setApplication(null);
     }
 
-    public void addCareer(Career career) {
-        career.setApplication(this);
-        this.careers.add(career);
+    public void addCareer(String company, String role, String team, String position, LocalDate startDate, LocalDate endDate, Boolean currentYn, String description) {
+        this.careers.add(Career.of(this, company, role, team, position, startDate, endDate, currentYn, description));
     }
 
     public void removeCareer(Career career) {
         this.careers.remove(career);
-        career.setApplication(null);
     }
 
-    public void addTechStack(TechStack techStack) {
-        ApplicationTechStack applicationTechStack = new ApplicationTechStack();
-        applicationTechStack.setApplication(this);
-        applicationTechStack.setTechStack(techStack);
+    public void addApplicationTechStack(ApplicationTechStack applicationTechStack) {
         this.applicationTechStacks.add(applicationTechStack);
     }
 
@@ -123,5 +121,35 @@ public class Application {
                 break;
             }
         }
+    }
+
+    public static Application of(String contact, String portfolio, ApplicationPathType applicationPathType, JobPosting jobPosting, User createdUser) {
+        Application application = new Application();
+        application.contact = contact;
+        application.portfolio = portfolio;
+        application.applyDatetime = LocalDateTime.now();
+        application.applicationPathType = applicationPathType;
+        application.statusType = ApplicationStatusType.APPLIED;
+        application.changeJobPosting(jobPosting);
+        application.changeCreatedUser(createdUser);
+        return application;
+    }
+
+    public void update(String contact, String portfolio, ApplicationPathType applicationPathType) {
+        this.contact = contact;
+        this.portfolio = portfolio;
+        this.applicationPathType = applicationPathType;
+        this.statusModifyDatetime = LocalDateTime.now();
+    }
+
+    public void updateStatus(ApplicationStatusType statusType, User modifiedUser) {
+        this.statusType = statusType;
+        this.statusModifyDatetime = LocalDateTime.now();
+        this.modifiedUser = modifiedUser;
+    }
+
+    public void uploadFile(String file) {
+        this.file = file;
+        this.modifiedDatetime = LocalDateTime.now();
     }
 }
